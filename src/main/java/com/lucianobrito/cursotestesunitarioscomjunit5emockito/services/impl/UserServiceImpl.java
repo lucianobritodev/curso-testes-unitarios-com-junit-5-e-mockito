@@ -1,10 +1,11 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.impl;
 
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.User;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.repositories.UserRepository;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserService;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
+    private ModelMapper modelMapper;
 
     @Override
-    public User findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado!"));
+    public UserDto findById(Long id) {
+        return modelMapper.map(
+                repository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado!")), UserDto.class);
     }
 
 

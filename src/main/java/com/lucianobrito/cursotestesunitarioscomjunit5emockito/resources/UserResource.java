@@ -1,6 +1,6 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.resources;
 
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.User;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class UserResource {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
