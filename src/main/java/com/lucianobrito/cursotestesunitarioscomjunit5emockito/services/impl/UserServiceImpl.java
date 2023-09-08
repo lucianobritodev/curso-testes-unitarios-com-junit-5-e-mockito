@@ -4,9 +4,12 @@ import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.User;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.repositories.UserRepository;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserService;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceAlreadyException;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
     private ModelMapper modelMapper;
+    private MessageSource messageSource;
 
     @Override
     public UserDto findById(Long id) {
@@ -35,8 +39,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
+        alreadyEmail(userDto);
         User user = repository.save(modelMapper.map(userDto, User.class));
         return modelMapper.map(user, UserDto.class);
+    }
+
+    private void alreadyEmail(UserDto userDto) {
+        if (repository.findByEmail(userDto.getEmail()).isPresent())
+            throw new ResourceAlreadyException(messageSource
+                    .getMessage("ResourceAlreadyException", new Object[]{ userDto.getEmail() }, LocaleContextHolder.getLocale()));
     }
 
 

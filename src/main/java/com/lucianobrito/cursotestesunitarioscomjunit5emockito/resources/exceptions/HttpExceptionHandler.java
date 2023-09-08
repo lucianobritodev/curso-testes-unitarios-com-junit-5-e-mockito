@@ -85,7 +85,7 @@ public class HttpExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandardError> resourceAlreadyError(final ResourceAlreadyException e,
                                                               final WebRequest request) {
 
-        String titleError = messageSource.getMessage("ResourceAlreadyError", null, LocaleContextHolder.getLocale());
+        String titleError = messageSource.getMessage("ResourceAlready", null, LocaleContextHolder.getLocale());
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
         StandardError err = this.getGenericError(e, titleError, statusCode, request);
         return ResponseEntity.status(statusCode).body(err);
