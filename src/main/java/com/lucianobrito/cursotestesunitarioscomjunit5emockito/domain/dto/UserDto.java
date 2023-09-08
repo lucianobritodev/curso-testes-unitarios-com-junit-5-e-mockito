@@ -1,7 +1,9 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,10 +13,16 @@ import lombok.Setter;
 public class UserDto {
 
     private Long id;
+
+    @NotBlank
     private String name;
+
+    @Email
+    @NotBlank
     private String email;
 
-    @JsonIgnore
+    @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 }

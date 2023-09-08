@@ -2,6 +2,8 @@ package com.lucianobrito.cursotestesunitarioscomjunit5emockito.resources.excepti
 
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceAlreadyException;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,10 +31,10 @@ public class HttpExceptionHandler extends ResponseEntityExceptionHandler {
     private MessageSource messageSource;
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatusCode status,
-                                                                  WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException e,
+                                                                  final HttpHeaders headers,
+                                                                  final HttpStatusCode status,
+                                                                  final WebRequest request) {
         List<StandardError.Field> fields = new ArrayList<>();
 
         for (ObjectError error : e.getBindingResult().getAllErrors()) {
@@ -48,8 +50,30 @@ public class HttpExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e, err, headers, status, request);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> resourceNotFound(final ConstraintViolationException e,
+                                                   final WebRequest request) {
+
+        List<StandardError.Field> fields = new ArrayList<>();
+        HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
+        HttpHeaders headers = HttpHeaders.EMPTY;
+
+        for (ConstraintViolation<?> error : e.getConstraintViolations()) {
+            String field = error.getPropertyPath().toString();
+            String message = error.getMessage();
+
+            fields.add(new StandardError.Field(field, message));
+        }
+
+        String titleError = messageSource.getMessage("FieldErrors", null, LocaleContextHolder.getLocale());
+        StandardError err = new StandardError(OffsetDateTime.now(),
+                statusCode.value(), ((ServletWebRequest) request).getRequest().getRequestURI(), titleError, null, fields, e.getCause());
+        return handleExceptionInternal(e, err, headers, statusCode, request);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, WebRequest request) {
+    public ResponseEntity<StandardError> resourceNotFound(final ResourceNotFoundException e,
+                                                          final WebRequest request) {
 
         String titleError = messageSource.getMessage("ResourceNotFound", null, LocaleContextHolder.getLocale());
         HttpStatus statusCode = HttpStatus.NOT_FOUND;
@@ -58,7 +82,8 @@ public class HttpExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceAlreadyException.class)
-    public ResponseEntity<StandardError> resourceAlreadyError(ResourceAlreadyException e, WebRequest request) {
+    public ResponseEntity<StandardError> resourceAlreadyError(final ResourceAlreadyException e,
+                                                              final WebRequest request) {
 
         String titleError = messageSource.getMessage("ResourceAlreadyError", null, LocaleContextHolder.getLocale());
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
@@ -67,7 +92,7 @@ public class HttpExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardError> internalServerError(Exception e, WebRequest request) {
+    public ResponseEntity<StandardError> internalServerError(final Exception e, final WebRequest request) {
 
         String titleError = messageSource.getMessage("InternalServerError", null, LocaleContextHolder.getLocale());
         HttpStatus statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
