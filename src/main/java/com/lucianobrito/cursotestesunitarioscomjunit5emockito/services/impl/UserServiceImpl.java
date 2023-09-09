@@ -7,9 +7,6 @@ import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserServi
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceAlreadyException;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,38 +14,41 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseService implements UserService {
 
     private UserRepository repository;
-    private ModelMapper modelMapper;
-    private MessageSource messageSource;
 
     @Override
     public UserDto findById(Long id) {
-        return modelMapper.map(
+        return this.entityToDto(
                 repository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Recurso não Encontrado!")), UserDto.class);
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                getMessage("ResourceNotFoundMessage"))), UserDto.class);
     }
 
     @Override
     public List<UserDto> findByAll() {
         return repository.findAll()
                 .stream()
-                .map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+                .map(user -> this.entityToDto(user, UserDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public UserDto create(UserDto userDto) {
         alreadyEmail(userDto);
-        User user = repository.save(modelMapper.map(userDto, User.class));
-        return modelMapper.map(user, UserDto.class);
+        User user = repository.save(this.dtoToEntity(userDto, User.class));
+        return this.entityToDto(user, UserDto.class);
+    }
+
+    @Override
+    public UserDto update(UserDto userDto) {
+        return this.entityToDto(this.repository.save(this.dtoToEntity(userDto, User.class)), UserDto.class);
     }
 
     private void alreadyEmail(UserDto userDto) {
         if (repository.findByEmail(userDto.getEmail()).isPresent())
-            throw new ResourceAlreadyException(messageSource
-                    .getMessage("ResourceAlreadyException", new Object[]{ userDto.getEmail() }, LocaleContextHolder.getLocale()));
+            throw new ResourceAlreadyException(
+                    getMessage("ResourceAlreadyException", userDto.getEmail()));
     }
-
 
 }

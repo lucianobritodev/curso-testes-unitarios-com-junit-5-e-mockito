@@ -10,9 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto {
-
-    private Long id;
+public class UserDto extends BaseDto {
 
     @NotBlank
     private String name;

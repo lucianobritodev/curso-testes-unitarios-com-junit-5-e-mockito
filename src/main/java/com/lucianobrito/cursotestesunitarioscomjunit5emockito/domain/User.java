@@ -15,11 +15,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "usuario")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
 
     @Column(columnDefinition = "varchar(40) not null unique")

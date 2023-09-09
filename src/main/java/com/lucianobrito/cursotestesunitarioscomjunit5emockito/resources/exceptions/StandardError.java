@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-@JsonPropertyOrder(value = {"timestap", "statusCode", "path", "title", "error", "fields", "cause"})
+@JsonPropertyOrder(value = {"statusCode", "path", "timestap", "title", "error", "fields", "cause"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @Getter

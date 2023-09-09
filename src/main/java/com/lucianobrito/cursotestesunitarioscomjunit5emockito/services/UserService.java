@@ -9,5 +9,9 @@ public interface UserService {
     UserDto findById(Long id);
     List<UserDto> findByAll();
     UserDto create(UserDto userDto);
+    UserDto update(UserDto userDto);
+
+
+
 
 }
