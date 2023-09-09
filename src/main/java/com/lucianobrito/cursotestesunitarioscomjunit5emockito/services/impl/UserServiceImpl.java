@@ -1,8 +1,9 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.impl;
 
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.User;
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.impl.User;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.impl.UserDto;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.repositories.UserRepository;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.BaseService;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserService;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceAlreadyException;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.exceptions.ResourceNotFoundException;

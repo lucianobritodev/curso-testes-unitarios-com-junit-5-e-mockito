@@ -1,6 +1,6 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.resources;
 
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.impl.UserDto;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;

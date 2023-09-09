@@ -1,5 +1,6 @@
-package com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain;
+package com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.impl;
 
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

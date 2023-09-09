@@ -1,7 +1,8 @@
-package com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto;
+package com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.impl;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.BaseDto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

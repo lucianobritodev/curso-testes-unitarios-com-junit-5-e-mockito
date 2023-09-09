@@ -1,4 +1,4 @@
-package com.lucianobrito.cursotestesunitarioscomjunit5emockito.services.impl;
+package com.lucianobrito.cursotestesunitarioscomjunit5emockito.services;
 
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.BaseEntity;
 import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.BaseDto;

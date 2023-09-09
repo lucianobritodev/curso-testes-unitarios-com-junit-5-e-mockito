@@ -1,6 +1,6 @@
 package com.lucianobrito.cursotestesunitarioscomjunit5emockito.services;
 
-import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.UserDto;
+import com.lucianobrito.cursotestesunitarioscomjunit5emockito.domain.dto.impl.UserDto;
 
 import java.util.List;
 
